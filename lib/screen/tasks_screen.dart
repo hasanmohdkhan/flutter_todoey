@@ -1,9 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mi_card/models/Task.dart';
 import 'package:mi_card/screen/add_task_screen.dart';
 import 'package:mi_card/widgets/task_list.dart';
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
+  @override
+  _TasksScreenState createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  List<Task> tasks = [
+    Task(name: 'Code Flutter'),
+    Task(name: 'Redeem udacity course'),
+    Task(name: 'Watch Star trek')
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +59,7 @@ class TasksScreen extends StatelessWidget {
                   topRight: Radius.circular(20.0),
                 ),
               ),
-              child: TaskList(),
+              child: TaskList(tasks: tasks),
             ),
           )
         ],
@@ -59,12 +71,16 @@ class TasksScreen extends StatelessWidget {
               context: context,
               isScrollControlled: true,
               builder: (context) => SingleChildScrollView(
-                  child:Container(
-                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: AddTaskScreen(),
-                  )
-              )
-          );
+                      child: Container(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: AddTaskScreen((newTask) {
+                      setState(() {
+                        tasks.add(Task(name: newTask));
+                        Navigator.pop(context);
+                      });
+                    }),
+                  )));
         },
         child: Icon(Icons.add, size: 30.0),
       ),
