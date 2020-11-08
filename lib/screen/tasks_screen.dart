@@ -1,21 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mi_card/models/Task.dart';
+import 'package:mi_card/models/tasks_data.dart';
 import 'package:mi_card/screen/add_task_screen.dart';
 import 'package:mi_card/widgets/task_list.dart';
+import 'package:provider/provider.dart';
 
-class TasksScreen extends StatefulWidget {
-  @override
-  _TasksScreenState createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(name: 'Code Flutter'),
-    Task(name: 'Redeem udacity course'),
-    Task(name: 'Watch Star trek')
-  ];
-
+class TasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +31,7 @@ class _TasksScreenState extends State<TasksScreen> {
                         fontSize: 50.0,
                         color: Colors.white,
                         fontWeight: FontWeight.w700)),
-                Text('12 Tasks',
+                Text('${Provider.of<TaskData>(context).taskCount} Tasks',
                     style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.white,
@@ -59,7 +49,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   topRight: Radius.circular(20.0),
                 ),
               ),
-              child: TaskList(tasks: tasks),
+              child: TaskList(),
             ),
           )
         ],
@@ -72,14 +62,12 @@ class _TasksScreenState extends State<TasksScreen> {
               isScrollControlled: true,
               builder: (context) => SingleChildScrollView(
                       child: Container(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: AddTaskScreen((newTask) {
-                      setState(() {
-                        tasks.add(Task(name: newTask));
-                        Navigator.pop(context);
-                      });
-                    }),
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery
+                                .of(context)
+                                .viewInsets
+                                .bottom),
+                        child: AddTaskScreen(),
                   )));
         },
         child: Icon(Icons.add, size: 30.0),
